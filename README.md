@@ -2,6 +2,15 @@
 
 The design pattern got its name Round Table in honor of the history of King Arthur and the Knights of the Round Table. Like those knights, the module components are also working together for the common purposes, but also are equal to each other and are independent by their signatures.
 
+## Table of contents:
+
+- Part #1: Components and their responsibilities
+- Part #2: Communication between components
+- Part #3: Communication between modules
+- Part #4: Memory management
+- Part #5: Briefly howto
+- Part #6: Installation and usage
+
 ## Part #1: Components and their responsibilities
 
 ### Presenter: controls the UI
@@ -76,7 +85,7 @@ enum CoreEvent {
 }
 
 private func handleDataUpdated() {
-    self.pipeline?.notify(event: dataUpdate)
+    self.pipeline?.notify(event: .dataUpdate)
 }
 
 // Pipeline -> Presenter [dataUpdate]
@@ -184,13 +193,13 @@ enum JointInput {
 }
 
 private func presentCommentModule() {
-    let module = CommentModuleAssembly(trunk: trunk)
+    let module = CommentModuleAssembly(trunk: self.trunk)
     //note// "module" contains {view, joint}
     
     module.joint.attach { [weak self] output in
         switch output {
             case .comment(let text):
-                self?.pipeline?.notify(input: .comment(text)) // <--  
+                self?.pipeline?.notify(input: .comment(text: text)) // <--  
                 self?.view?.dismiss(animated: true)
         }
     }
@@ -240,7 +249,223 @@ Memory management is based on automatic UIViewController existence during a navi
 - Core, Presenter, and Joint strongly hold the State
 - All other references are weak
 
-## Part #5: Installation and usage
+## Part #5: Briefly howto
+
+There are 5 places you should learn about:
+Assembly, State, Core, Presenter, and Joint.
+
+### Assembly
+
+The primary goal of Assembly function is creating the module's components and passing the Trunk object through the hierarchy.
+
+Also feel free to use the extra arguments in case you need passing them into any component depending on your own business logic.
+
+Having the previous example of `LoginModuleAssembly()`, we can add the extra argument `LoginModuleKind` that'll stand for what kind of Login Form we do want: by phone, or by email.
+
+So we keep the passed Kind argument, and retrieve the AuthManager from Trunk.
+Please pay your attention to lines #6, #9, and #14:
+
+```swift
+enum LoginModuleKind {
+    case email
+    case phone
+}
+
+func LoginModuleAssembly(trunk: Trunk, kind: LoginModuleKind) -> LoginModule { // <--
+    return RTEModuleAssembly(
+        pipeline: LoginModulePipeline(),
+        state: LoginModuleState(kind: kind), // <--
+        coreBuilder: { pipeline, state in
+            LoginModuleCore(
+                pipeline: pipeline,
+                state: state,
+                authManager: trunk.authManager // <--
+            )
+        },
+        presenterBuilder: { pipeline, state in
+            LoginModulePresenter(
+                pipeline: pipeline,
+                state: state
+            )
+        },
+        viewBuilder: { pipeline in
+            LoginModuleView(
+                pipeline: pipeline
+            )
+        },
+        jointBuilder: { pipeline, state, view in
+            LoginModuleJoint(
+                pipeline: pipeline,
+                state: state,
+                view: view,
+                trunk: trunk
+            )
+        })
+}
+```
+
+Having the built module, you may use it any way you want:
+
+```swift
+// From a start point, for window root
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+    
+    func application(/*...*/) -> Bool {
+        let trunk = Trunk(/*...*/)
+        let module = LoginModuleAssembly(trunk: trunk, kind: .email)
+        
+        let window = UIWindow()
+        self.window = window
+        
+        window.rootViewController = module.view
+        window.makeKeyAndVisible()
+        
+        return true
+    }
+}
+
+// From any Joint (using a Joint's Trunk)
+func presentLoginForm() {
+    let module = LoginModuleAssembly(trunk: self.trunk, kind: .email)
+    self.view?.present(module.view, animated: true)
+}
+
+// From any ViewController of other design pattern (need global Trunk)
+func presentLoginForm() {
+    let module = LoginModuleAssembly(trunk: GlobalTrunk, kind: .email)
+    self.present(module.view, animated: true)
+}
+```
+
+### State
+
+Initially it's just an empty object like that one:
+
+```swift
+final class LoginModuleState {
+}	
+```
+
+But you can fill it by constants or variables you need:
+
+```swift
+final class LoginModuleState {
+    let kind: LoginModuleKind
+    var inputLogin = String() 
+    var inputPassword = String()
+  
+    init(kind: LoginModuleKind) {
+        self.kind = kind
+    }
+}
+```
+
+### Core
+
+This is the primary place where you implement the business logic of your module.
+Core has three entrypoints. All of them are basically do nothing, so feel free not to implement them instead of having empty methods:
+
+```swift
+/*
+  The run() method gets called automatically
+  after the module has been successfully created
+  and his components are linked with the Pipeline
+
+  Best place to perform any startup commands and calls,
+  like subscribing to any observables, or extracting any initial data
+*/
+override func run() {
+}
+
+/*
+  The handleView(intent:) method gets called by the Pipeline
+  if the View has passed some Intent into it
+*/
+override func handleView(intent: LoginModuleViewIntent) {
+}
+
+/*
+  The handleJoint(input:) method gets called by the Pipeline
+  if the Joint has passed some Input into it
+*/
+override func handleJoint(input: LoginModuleJointInput) {
+}
+```
+
+### Presenter
+
+This is the UI coordinator where you manage what updates will be passed to your View.
+Presenter has four entrypoints. All of them are basically do nothing, so feel free not to implement them instead of having empty methods:
+
+```swift
+/*
+  The update(firstAppear:) method gets called automatically
+  after the module has been successfully created
+  and his components are linked with the Pipeline,
+  having agrument 'firstAppear' to be true
+
+  Best place to send render updates to View
+  so to represent the entire screen contents
+
+  Feel free to call this method manually,
+  having the 'firstAppear' argument value as you wish
+*/
+func update(firstAppear: Bool) {
+}
+
+/*
+  The handleView(intent:) method gets called by the Pipeline
+  if the View has passed some Intent into it
+*/
+override func handleView(intent: LoginModuleViewIntent) {
+}
+
+/*
+  The handleCore(event:) method gets called by the Pipeline
+  if the Core has passed some Event into it
+*/
+override func handleCore(event: LoginModuleCoreEvent) {
+}
+
+/*
+  The handleJoint(input:) method gets called by the Pipeline
+  if the Joint has passed some Input into it
+*/
+override func handleJoint(input: LoginModuleJointInput) {
+}
+```
+
+### Joint
+
+This is the hierarchy coordinator, it communicates with children and parent.
+Joint has two entrypoints and one outlet to notify its parent. All of the entrypoints are basically do nothing, so feel free not to implement them instead of having empty methods:
+
+```swift
+enum LoginModuleViewOutput {
+    case dismiss
+}
+
+/*
+  The handleCore(event:) method gets called by the Pipeline
+  if the Core has passed some Event into it
+*/
+override func handleCore(event: LoginModuleCoreEvent) {
+}
+
+/*
+  The handleView(intent:) method gets called by the Pipeline
+  if the View has passed some Intent into it
+*/
+override func handleView(intent: LoginModuleViewIntent) {
+    switch intent {
+        case .cancelButtonTap:
+            self.notifyOut(output: .dismiss)
+    }
+}
+```
+
+## Part #6: Installation and usage
 
 ### Install the templates
 

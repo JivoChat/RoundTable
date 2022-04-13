@@ -29,16 +29,16 @@ TaskListModuleState
         super.init(pipeline: pipeline, state: state)
     }
 
+    deinit {
+        if let uid = tasksListener {
+            taskManager.removeListener(uid: uid)
+        }
+    }
+    
     override func run() {
         tasksListener = taskManager.attachListener { [weak self] tasks in
             self?.state.tasks = tasks
             self?.pipeline?.notify(event: .hasTaskUpdates)
-        }
-    }
-    
-    deinit {
-        if let uid = tasksListener {
-            taskManager.removeListener(uid: uid)
         }
     }
     
@@ -50,5 +50,9 @@ TaskListModuleState
         default:
             break
         }
+    }
+    
+    override func handleJoint(input: TaskListModuleJointInput) {
+        
     }
 }
