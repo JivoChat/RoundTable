@@ -45,7 +45,7 @@ struct InfoModuleView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Help")
+            .navigationTitle("SwiftUI Example")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button("Close") {
