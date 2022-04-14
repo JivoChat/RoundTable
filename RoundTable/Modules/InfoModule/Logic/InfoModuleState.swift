@@ -8,4 +8,5 @@
 import Foundation
 
 final class InfoModuleState {
+    var counter = Int(0)
 }

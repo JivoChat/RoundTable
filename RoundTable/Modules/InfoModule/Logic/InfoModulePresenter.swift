@@ -23,6 +23,10 @@ final class InfoModulePresenter
     }
     
     override func handleCore(event: InfoModuleCoreEvent) {
+        switch event {
+        case .counterChange:
+            self.binding.counter = self.state.counter
+        }
     }
     
     override func handleView(intent: InfoModuleViewIntent) {

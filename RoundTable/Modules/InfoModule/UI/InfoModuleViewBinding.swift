@@ -9,4 +9,5 @@ import Foundation
 import SwiftUI
 
 final class InfoModuleViewBinding: ObservableObject {
+    @Published var counter = Int(0)
 }

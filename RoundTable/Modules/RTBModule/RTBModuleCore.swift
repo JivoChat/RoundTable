@@ -21,7 +21,7 @@ class RTBModulePipelineCoreHandler<ViewIntent, JointInput> {
 class RTBModuleCore<Pipeline: IRTBModulePipelineCoreNotifier, CoreEvent, ViewIntent, JointInput, State: AnyObject>
 : RTBModulePipelineCoreHandler<ViewIntent, JointInput>
 where Pipeline.CoreEvent == CoreEvent {
-    private weak var pipeline: Pipeline?
+    private(set) weak var pipeline: Pipeline?
     internal let state: State
     
     init(pipeline: Pipeline, state: State) {

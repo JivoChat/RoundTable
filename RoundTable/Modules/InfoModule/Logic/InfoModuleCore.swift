@@ -8,6 +8,7 @@
 import Foundation
 
 enum InfoModuleCoreEvent {
+    case counterChange
 }
 
 final class InfoModuleCore
@@ -26,6 +27,16 @@ final class InfoModuleCore
     }
     
     override func handleView(intent: InfoModuleViewIntent) {
+        switch intent {
+        case .close:
+            break
+        case .decrement:
+            self.state.counter -= 1
+            self.pipeline?.notify(event: .counterChange)
+        case .increment:
+            self.state.counter += 1
+            self.pipeline?.notify(event: .counterChange)
+        }
     }
     
     override func handleJoint(input: InfoModuleJointInput) {

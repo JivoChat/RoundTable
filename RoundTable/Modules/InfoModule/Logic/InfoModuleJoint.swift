@@ -30,6 +30,8 @@ final class InfoModuleJoint
         switch intent {
         case .close:
             notifyOut(output: .dismiss)
+        default:
+            break
         }
     }
 }

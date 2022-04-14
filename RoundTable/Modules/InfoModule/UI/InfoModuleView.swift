@@ -10,12 +10,14 @@ import SwiftUI
 
 enum InfoModuleViewIntent {
     case close
+    case decrement
+    case increment
 }
 
 struct InfoModuleView: View {
     let trunk: RTBConfigTrunk?
     
-    private let binding: InfoModuleViewBinding
+    @ObservedObject private var binding: InfoModuleViewBinding
     private let pipeline: InfoModulePipeline?
     
     init(trunk: RTBConfigTrunk?, callback: ((InfoModuleJointOutput) -> Void)?) {
@@ -28,17 +30,29 @@ struct InfoModuleView: View {
     
     var body: some View {
         NavigationView {
-            Text("In opposite to others,\nthis module uses SwiftUI")
-                .multilineTextAlignment(.center)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationTitle("Help")
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        Button("Close") {
-                            pipeline?.notify(intent: .close)
-                        }
+            VStack {
+                Text("Counter: \(self.binding.counter)")
+                    .multilineTextAlignment(.center)
+                
+                HStack {
+                    Button("Decrement") {
+                        self.pipeline?.notify(intent: .decrement)
+                    }
+                    
+                    Button("Increment") {
+                        self.pipeline?.notify(intent: .increment)
                     }
                 }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Help")
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Button("Close") {
+                        pipeline?.notify(intent: .close)
+                    }
+                }
+            }
         }
     }
 }
