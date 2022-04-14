@@ -27,6 +27,19 @@
 		D41C3D6E2803342700AE5C7D /* Trunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41C3D6D2803342700AE5C7D /* Trunk.swift */; };
 		D41C3D73280338BA00AE5C7D /* TaskListModuleDataset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41C3D72280338BA00AE5C7D /* TaskListModuleDataset.swift */; };
 		D41C3D782803411600AE5C7D /* FormattingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41C3D772803411600AE5C7D /* FormattingProvider.swift */; };
+		D45942D328083F7800CE82CE /* RTEModulePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942CC28083F7800CE82CE /* RTEModulePipeline.swift */; };
+		D45942D428083F7800CE82CE /* RTEModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942CD28083F7800CE82CE /* RTEModule.swift */; };
+		D45942D528083F7800CE82CE /* RTEModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942CE28083F7800CE82CE /* RTEModulePresenter.swift */; };
+		D45942D628083F7800CE82CE /* RTEModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942CF28083F7800CE82CE /* RTEModuleAssembly.swift */; };
+		D45942D728083F7800CE82CE /* RTEModuleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942D028083F7800CE82CE /* RTEModuleCore.swift */; };
+		D45942D828083F7800CE82CE /* RTEModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942D128083F7800CE82CE /* RTEModuleView.swift */; };
+		D45942D928083F7800CE82CE /* RTEModuleJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942D228083F7800CE82CE /* RTEModuleJoint.swift */; };
+		D45942E028083F8500CE82CE /* RTBModuleJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942DA28083F8500CE82CE /* RTBModuleJoint.swift */; };
+		D45942E128083F8500CE82CE /* RTBModulePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942DB28083F8500CE82CE /* RTBModulePipeline.swift */; };
+		D45942E228083F8500CE82CE /* RTBModuleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942DC28083F8500CE82CE /* RTBModuleCore.swift */; };
+		D45942E328083F8500CE82CE /* RTBModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942DD28083F8500CE82CE /* RTBModuleAssembly.swift */; };
+		D45942E428083F8500CE82CE /* RTBModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942DE28083F8500CE82CE /* RTBModulePresenter.swift */; };
+		D45942E528083F8500CE82CE /* RTBModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45942DF28083F8500CE82CE /* RTBModuleView.swift */; };
 		D4C211D42804926C0064530C /* InfoModuleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C211CD2804926C0064530C /* InfoModuleCore.swift */; };
 		D4C211D52804926C0064530C /* InfoModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C211CE2804926C0064530C /* InfoModulePresenter.swift */; };
 		D4C211D62804926C0064530C /* InfoModuleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C211CF2804926C0064530C /* InfoModuleState.swift */; };
@@ -34,19 +47,6 @@
 		D4C211D82804926C0064530C /* InfoModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C211D12804926C0064530C /* InfoModuleAssembly.swift */; };
 		D4C211D92804926C0064530C /* InfoModuleJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C211D22804926C0064530C /* InfoModuleJoint.swift */; };
 		D4C211DA2804926C0064530C /* InfoModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C211D32804926C0064530C /* InfoModuleView.swift */; };
-		D4C2126E280555E50064530C /* RTEModulePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21267280555E50064530C /* RTEModulePipeline.swift */; };
-		D4C2126F280555E50064530C /* RTEModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21268280555E50064530C /* RTEModule.swift */; };
-		D4C21270280555E50064530C /* RTEModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21269280555E50064530C /* RTEModulePresenter.swift */; };
-		D4C21271280555E50064530C /* RTEModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2126A280555E50064530C /* RTEModuleAssembly.swift */; };
-		D4C21272280555E50064530C /* RTEModuleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2126B280555E50064530C /* RTEModuleCore.swift */; };
-		D4C21273280555E50064530C /* RTEModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2126C280555E50064530C /* RTEModuleView.swift */; };
-		D4C21274280555E50064530C /* RTEModuleJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2126D280555E50064530C /* RTEModuleJoint.swift */; };
-		D4C2127C280555F60064530C /* RTBModuleJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21275280555F60064530C /* RTBModuleJoint.swift */; };
-		D4C2127D280555F60064530C /* RTBModulePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21276280555F60064530C /* RTBModulePipeline.swift */; };
-		D4C2127E280555F60064530C /* RTBModuleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21277280555F60064530C /* RTBModuleCore.swift */; };
-		D4C2127F280555F60064530C /* RTBModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C21278280555F60064530C /* RTBModuleAssembly.swift */; };
-		D4C21281280555F60064530C /* RTBModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2127A280555F60064530C /* RTBModulePresenter.swift */; };
-		D4C21282280555F60064530C /* RTBModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2127B280555F60064530C /* RTBModuleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +72,19 @@
 		D41C3D6D2803342700AE5C7D /* Trunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trunk.swift; sourceTree = "<group>"; };
 		D41C3D72280338BA00AE5C7D /* TaskListModuleDataset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListModuleDataset.swift; sourceTree = "<group>"; };
 		D41C3D772803411600AE5C7D /* FormattingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattingProvider.swift; sourceTree = "<group>"; };
+		D45942CC28083F7800CE82CE /* RTEModulePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModulePipeline.swift; sourceTree = "<group>"; };
+		D45942CD28083F7800CE82CE /* RTEModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModule.swift; sourceTree = "<group>"; };
+		D45942CE28083F7800CE82CE /* RTEModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModulePresenter.swift; sourceTree = "<group>"; };
+		D45942CF28083F7800CE82CE /* RTEModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleAssembly.swift; sourceTree = "<group>"; };
+		D45942D028083F7800CE82CE /* RTEModuleCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleCore.swift; sourceTree = "<group>"; };
+		D45942D128083F7800CE82CE /* RTEModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleView.swift; sourceTree = "<group>"; };
+		D45942D228083F7800CE82CE /* RTEModuleJoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleJoint.swift; sourceTree = "<group>"; };
+		D45942DA28083F8500CE82CE /* RTBModuleJoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleJoint.swift; sourceTree = "<group>"; };
+		D45942DB28083F8500CE82CE /* RTBModulePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModulePipeline.swift; sourceTree = "<group>"; };
+		D45942DC28083F8500CE82CE /* RTBModuleCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleCore.swift; sourceTree = "<group>"; };
+		D45942DD28083F8500CE82CE /* RTBModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleAssembly.swift; sourceTree = "<group>"; };
+		D45942DE28083F8500CE82CE /* RTBModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModulePresenter.swift; sourceTree = "<group>"; };
+		D45942DF28083F8500CE82CE /* RTBModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleView.swift; sourceTree = "<group>"; };
 		D4C211CD2804926C0064530C /* InfoModuleCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModuleCore.swift; sourceTree = "<group>"; };
 		D4C211CE2804926C0064530C /* InfoModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModulePresenter.swift; sourceTree = "<group>"; };
 		D4C211CF2804926C0064530C /* InfoModuleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModuleState.swift; sourceTree = "<group>"; };
@@ -79,19 +92,6 @@
 		D4C211D12804926C0064530C /* InfoModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModuleAssembly.swift; sourceTree = "<group>"; };
 		D4C211D22804926C0064530C /* InfoModuleJoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModuleJoint.swift; sourceTree = "<group>"; };
 		D4C211D32804926C0064530C /* InfoModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModuleView.swift; sourceTree = "<group>"; };
-		D4C21267280555E50064530C /* RTEModulePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModulePipeline.swift; sourceTree = "<group>"; };
-		D4C21268280555E50064530C /* RTEModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModule.swift; sourceTree = "<group>"; };
-		D4C21269280555E50064530C /* RTEModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModulePresenter.swift; sourceTree = "<group>"; };
-		D4C2126A280555E50064530C /* RTEModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleAssembly.swift; sourceTree = "<group>"; };
-		D4C2126B280555E50064530C /* RTEModuleCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleCore.swift; sourceTree = "<group>"; };
-		D4C2126C280555E50064530C /* RTEModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleView.swift; sourceTree = "<group>"; };
-		D4C2126D280555E50064530C /* RTEModuleJoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTEModuleJoint.swift; sourceTree = "<group>"; };
-		D4C21275280555F60064530C /* RTBModuleJoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleJoint.swift; sourceTree = "<group>"; };
-		D4C21276280555F60064530C /* RTBModulePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModulePipeline.swift; sourceTree = "<group>"; };
-		D4C21277280555F60064530C /* RTBModuleCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleCore.swift; sourceTree = "<group>"; };
-		D4C21278280555F60064530C /* RTBModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleAssembly.swift; sourceTree = "<group>"; };
-		D4C2127A280555F60064530C /* RTBModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModulePresenter.swift; sourceTree = "<group>"; };
-		D4C2127B280555F60064530C /* RTBModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTBModuleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,13 +137,13 @@
 		D41C3D3D2802DC7200AE5C7D /* RTEModule */ = {
 			isa = PBXGroup;
 			children = (
-				D4C21267280555E50064530C /* RTEModulePipeline.swift */,
-				D4C21268280555E50064530C /* RTEModule.swift */,
-				D4C21269280555E50064530C /* RTEModulePresenter.swift */,
-				D4C2126A280555E50064530C /* RTEModuleAssembly.swift */,
-				D4C2126B280555E50064530C /* RTEModuleCore.swift */,
-				D4C2126C280555E50064530C /* RTEModuleView.swift */,
-				D4C2126D280555E50064530C /* RTEModuleJoint.swift */,
+				D45942CC28083F7800CE82CE /* RTEModulePipeline.swift */,
+				D45942CD28083F7800CE82CE /* RTEModule.swift */,
+				D45942CE28083F7800CE82CE /* RTEModulePresenter.swift */,
+				D45942CF28083F7800CE82CE /* RTEModuleAssembly.swift */,
+				D45942D028083F7800CE82CE /* RTEModuleCore.swift */,
+				D45942D128083F7800CE82CE /* RTEModuleView.swift */,
+				D45942D228083F7800CE82CE /* RTEModuleJoint.swift */,
 			);
 			path = RTEModule;
 			sourceTree = "<group>";
@@ -265,12 +265,12 @@
 		D4C210E12804854D0064530C /* RTBModule */ = {
 			isa = PBXGroup;
 			children = (
-				D4C21275280555F60064530C /* RTBModuleJoint.swift */,
-				D4C21276280555F60064530C /* RTBModulePipeline.swift */,
-				D4C21277280555F60064530C /* RTBModuleCore.swift */,
-				D4C21278280555F60064530C /* RTBModuleAssembly.swift */,
-				D4C2127A280555F60064530C /* RTBModulePresenter.swift */,
-				D4C2127B280555F60064530C /* RTBModuleView.swift */,
+				D45942DA28083F8500CE82CE /* RTBModuleJoint.swift */,
+				D45942DB28083F8500CE82CE /* RTBModulePipeline.swift */,
+				D45942DC28083F8500CE82CE /* RTBModuleCore.swift */,
+				D45942DD28083F8500CE82CE /* RTBModuleAssembly.swift */,
+				D45942DE28083F8500CE82CE /* RTBModulePresenter.swift */,
+				D45942DF28083F8500CE82CE /* RTBModuleView.swift */,
 			);
 			path = RTBModule;
 			sourceTree = "<group>";
@@ -376,38 +376,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				D41C3D552803003100AE5C7D /* TaskListModuleJoint.swift in Sources */,
-				D4C2127C280555F60064530C /* RTBModuleJoint.swift in Sources */,
-				D4C21270280555E50064530C /* RTEModulePresenter.swift in Sources */,
+				D45942E028083F8500CE82CE /* RTBModuleJoint.swift in Sources */,
+				D45942D528083F7800CE82CE /* RTEModulePresenter.swift in Sources */,
 				D4C211D92804926C0064530C /* InfoModuleJoint.swift in Sources */,
 				D41C3D5A2803003100AE5C7D /* TaskListModuleCore.swift in Sources */,
 				D4C211DA2804926C0064530C /* InfoModuleView.swift in Sources */,
-				D4C21274280555E50064530C /* RTEModuleJoint.swift in Sources */,
-				D4C21271280555E50064530C /* RTEModuleAssembly.swift in Sources */,
-				D4C21273280555E50064530C /* RTEModuleView.swift in Sources */,
+				D45942D928083F7800CE82CE /* RTEModuleJoint.swift in Sources */,
+				D45942D628083F7800CE82CE /* RTEModuleAssembly.swift in Sources */,
+				D45942D828083F7800CE82CE /* RTEModuleView.swift in Sources */,
 				D41C3D562803003100AE5C7D /* TaskListModulePresenter.swift in Sources */,
-				D4C2127D280555F60064530C /* RTBModulePipeline.swift in Sources */,
+				D45942E128083F8500CE82CE /* RTBModulePipeline.swift in Sources */,
 				D41C3D622803055F00AE5C7D /* TaskEditModuleView.swift in Sources */,
 				D4C211D72804926C0064530C /* InfoModuleViewBinding.swift in Sources */,
 				D41C3D6A2803332800AE5C7D /* Task.swift in Sources */,
 				D4C211D82804926C0064530C /* InfoModuleAssembly.swift in Sources */,
-				D4C2127E280555F60064530C /* RTBModuleCore.swift in Sources */,
+				D45942E228083F8500CE82CE /* RTBModuleCore.swift in Sources */,
 				D41C3D782803411600AE5C7D /* FormattingProvider.swift in Sources */,
 				D41C3D672803055F00AE5C7D /* TaskEditModuleAssembly.swift in Sources */,
-				D4C21272280555E50064530C /* RTEModuleCore.swift in Sources */,
+				D45942D728083F7800CE82CE /* RTEModuleCore.swift in Sources */,
 				D4C211D52804926C0064530C /* InfoModulePresenter.swift in Sources */,
 				D41C3D652803055F00AE5C7D /* TaskEditModuleState.swift in Sources */,
 				D41C3D292802DBF600AE5C7D /* AppDelegate.swift in Sources */,
 				D41C3D582803003100AE5C7D /* TaskListModuleView.swift in Sources */,
 				D41C3D6E2803342700AE5C7D /* Trunk.swift in Sources */,
 				D4C211D42804926C0064530C /* InfoModuleCore.swift in Sources */,
-				D4C21282280555F60064530C /* RTBModuleView.swift in Sources */,
+				D45942E528083F8500CE82CE /* RTBModuleView.swift in Sources */,
 				D41C3D592803003100AE5C7D /* TaskListModuleState.swift in Sources */,
-				D4C2126F280555E50064530C /* RTEModule.swift in Sources */,
+				D45942D428083F7800CE82CE /* RTEModule.swift in Sources */,
 				D4C211D62804926C0064530C /* InfoModuleState.swift in Sources */,
-				D4C2127F280555F60064530C /* RTBModuleAssembly.swift in Sources */,
+				D45942E328083F8500CE82CE /* RTBModuleAssembly.swift in Sources */,
 				D41C3D662803055F00AE5C7D /* TaskEditModulePresenter.swift in Sources */,
-				D4C2126E280555E50064530C /* RTEModulePipeline.swift in Sources */,
-				D4C21281280555F60064530C /* RTBModulePresenter.swift in Sources */,
+				D45942D328083F7800CE82CE /* RTEModulePipeline.swift in Sources */,
+				D45942E428083F8500CE82CE /* RTBModulePresenter.swift in Sources */,
 				D41C3D6C2803336400AE5C7D /* TaskManager.swift in Sources */,
 				D41C3D572803003100AE5C7D /* TaskListModuleAssembly.swift in Sources */,
 				D41C3D632803055F00AE5C7D /* TaskEditModuleJoint.swift in Sources */,

@@ -2,7 +2,7 @@
 //  RTBModuleJoint.swift
 //  RoundTable
 //
-//  Created by Stan Potemkin on 12.04.2022.
+//  Created by Stan Potemkin on 14.04.2022.
 //
 
 import Foundation
@@ -32,6 +32,10 @@ where Pipeline.JointInput == JointInput {
         self.state = state
         self.trunk = trunk
         self.callback = callback
+    }
+    
+    func take(input: JointInput) {
+        self.pipeline?.notify(input: input)
     }
     
     override func handleCore(event: CoreEvent) {

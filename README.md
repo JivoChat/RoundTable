@@ -19,7 +19,7 @@ Presenter is responsible for preparing the data model before flushing it into Vi
 
 ### Core: controls the business logic
 
-Core has access to some system dependencies (managers, services, adapters, etc) and implements the business logic using them.
+Core has access to some system dependencies (like managers, services, adapters, etc) and implements the business logic using them.
 
 ### Joint: controls the hierarchy
 
@@ -151,7 +151,7 @@ And there's one more important note. The Pipeline performs communication in spec
 - from **Presenter**, to **Core** and **Joint**
 - from **Joint**, to **Core** and **Presenter**
 
-This special rule has a special meaning: in most cases, every action causes the module state change. It's why Core is the first receiver, to be possible to modify the module State. Then, the second receiver is Presenter, to render the View using the updated module State. And the third is Joint, in case we should feed a command outside for parent.
+This special rule has a special meaning: in most cases, every action causes the module state change. It's why Core is the first receiver, to be possible to modify the module State. Then, the second receiver is Presenter, to render the View using the updated module State. And the third is Joint, in case we should feed a command outside, to parent.
 
 This distribution order is why we finally got rid of numerous boilerplate-like proxy calls you might have seen within other architectures.
 
@@ -251,8 +251,8 @@ Memory management is based on automatic UIViewController existence during a navi
 
 ## Part #5: Briefly howto
 
-There are 5 places you should learn about:
-Assembly, State, Core, Presenter, and Joint.
+There are six places you should learn about:
+Assembly, State, Core, Presenter, View, and Joint.
 
 ### Assembly
 
@@ -368,6 +368,17 @@ Core has three entrypoints. All of them are basically do nothing, so feel free n
 
 ```swift
 /*
+  *CoreEvent are the values for notifying about any changes
+  the Core can distribute to other modules via Pipeline
+*/
+enum LoginModuleCoreEvent {
+    enum Failure { case wrongPair, reachedLimit }
+    case started
+    case success
+    case failure(Failure)
+}
+
+/*
   The run() method gets called automatically
   after the module has been successfully created
   and his components are linked with the Pipeline
@@ -376,18 +387,43 @@ Core has three entrypoints. All of them are basically do nothing, so feel free n
   like subscribing to any observables, or extracting any initial data
 */
 override func run() {
+    let (login, password) = self.authManager.credentials
+    self.state.inputLogin = login
+    self.state.inputPassword = password
+  
+    self.authManager.attach { [weak self] status in
+        switch status {
+            case .login:
+                self?.pipeline?.notify(event: .success)
+            case .wrong:
+                self?.pipeline?.notify(event: .failure(.wrongPair))
+            case .limit:
+                self?.pipeline?.notify(event: .failure(.reachedLimit))
+        }
+    }
 }
 
 /*
   The handleView(intent:) method gets called by the Pipeline
-  if the View has passed some Intent into it
+  if the View has passed some *ViewIntent into it
 */
 override func handleView(intent: LoginModuleViewIntent) {
+    switch intent {
+        case .loginChange(let value):
+            self.state.inputLogin = value
+        case .passwordChange(let value):
+            self.state.inputPassword = value
+        case .loginButtonTap:
+            let login = self.state.inputLogin
+            let password = self.state.inputPassword
+            self.authManager.signIn(login: login, password: password)
+            self.pipeline?.notify(event: .started)
+    }
 }
 
 /*
   The handleJoint(input:) method gets called by the Pipeline
-  if the Joint has passed some Input into it
+  if the Joint has passed some *JointInput into it
 */
 override func handleJoint(input: LoginModuleJointInput) {
 }
@@ -399,6 +435,16 @@ This is the UI coordinator where you manage what updates will be passed to your 
 Presenter has four entrypoints. All of them are basically do nothing, so feel free not to implement them instead of having empty methods:
 
 ```swift
+/*
+  *PresenterUpdate are the values for updating UI
+  the Presenter can distribute to View via Pipeline
+*/
+enum LoginModulePresenterUpdate {
+    case prefill(login: String, password: String)
+    case failure(reason: String?)
+    case toggleWaitingIndicator(visible: Bool)
+}
+
 /*
   The update(firstAppear:) method gets called automatically
   after the module has been successfully created
@@ -412,25 +458,51 @@ Presenter has four entrypoints. All of them are basically do nothing, so feel fr
   having the 'firstAppear' argument value as you wish
 */
 func update(firstAppear: Bool) {
+    if firstAppear {
+        let login = self.state.inputLogin
+        let password = self.state.inputPassword
+        self.pipeline?.notify(update: .prefill(login: login, password: password))
+    }
 }
 
 /*
   The handleView(intent:) method gets called by the Pipeline
-  if the View has passed some Intent into it
+  if the View has passed some *ViewIntent into it
 */
 override func handleView(intent: LoginModuleViewIntent) {
 }
 
 /*
   The handleCore(event:) method gets called by the Pipeline
-  if the Core has passed some Event into it
+  if the Core has passed some *CoreEvent into it
 */
 override func handleCore(event: LoginModuleCoreEvent) {
+    switch event {
+        case .started:
+            self.pipeline?.notify(update: .toggleWaitingIndicator(visible: true))
+        case .success:
+            // the screen will be dismissed, no need to update
+            break
+        case .failure:
+            self.pipeline?.notify(update: .toggleWaitingIndicator(visible: false))
+    }
+  
+    switch event {
+        case .started:
+            self.pipeline?.notify(update: .failure(reason: nil))
+        case .success:
+            // the screen will be dismissed, no need to update
+            break
+        case .failure(.wrongPair):
+            self.pipeline?.notify(update: .failure(reason: "Check your credentials"))
+        case .failure(.reachedLimit):
+            self.pipeline?.notify(update: .failure(reason: "Please try again later"))
+    }
 }
 
 /*
   The handleJoint(input:) method gets called by the Pipeline
-  if the Joint has passed some Input into it
+  if the Joint has passed some *JointInput into it
 */
 override func handleJoint(input: LoginModuleJointInput) {
 }
@@ -439,29 +511,100 @@ override func handleJoint(input: LoginModuleJointInput) {
 ### Joint
 
 This is the hierarchy coordinator, it communicates with children and parent.
-Joint has two entrypoints and one outlet to notify its parent. All of the entrypoints are basically do nothing, so feel free not to implement them instead of having empty methods:
+Here you can find the reference to View (via `self.view` property), and the outlet to notify its parent (via `notifyOut(output:)` method). You can pass something in from outside using `take(input:)` method.
+Also, joint has two entrypoints. All of them are basically do nothing, so feel free not to implement them instead of having empty methods:
 
 ```swift
-enum LoginModuleViewOutput {
+/*
+  *JointInput are the values the Joint can receive from outside
+  to distribute to components via Pipeline
+*/
+enum LoginModuleJointInput {
+}
+
+/*
+  *JointOutput are the values the Joint can send to his parent
+*/
+enum LoginModuleJointOutput {
     case dismiss
 }
 
 /*
   The handleCore(event:) method gets called by the Pipeline
-  if the Core has passed some Event into it
+  if the Core has passed some *CoreEvent into it
 */
 override func handleCore(event: LoginModuleCoreEvent) {
+    switch event {
+        case .success:
+            self.notifyOut(output: .dismiss)
+    }
 }
 
 /*
   The handleView(intent:) method gets called by the Pipeline
-  if the View has passed some Intent into it
+  if the View has passed some *ViewIntent into it
 */
 override func handleView(intent: LoginModuleViewIntent) {
     switch intent {
         case .cancelButtonTap:
             self.notifyOut(output: .dismiss)
+        case .recoveryButtonTap:
+            let module = RecoveryModuleAssembly(trunk: self.trunk, login: self.state.login)
+      
+            // There is also an option to pass any extra input some later
+            // module.joint.take(input: ...)
+      
+            module.joint.attach { output in
+                // ...
+            }
+      
+            self.view?.present(module.view, animated: true)
     }
+}
+```
+
+### View
+
+This is the UI part the user interacts with.
+It can pass some user actions into module using ViewIntents.
+View has just one entrypoint. It basically do nothing, so feel free not to implement it instead of having empty method:
+
+```swift
+/*
+  *ViewIntent are user actions in UI
+  the View can distribute to module via Pipeline
+*/
+enum LoginFormViewIntent {
+    case loginChange(String)
+    case passwordChange(String)
+    case loginButtonTap 
+}
+
+override func handlePresenter(update: LoginFormModulePresenterUpdate) {
+    switch update {
+        case .prefill(let login, let password):
+            self.loginTextField.text = login
+            self.passwordTextField.text = password
+        case .failure(let reason):
+            // ...
+        case .toggleWaitingIndicator(let visible):
+            // ...
+    }
+}
+
+@objc private func handleLoginButton() {
+    self.pipeline.notify(intent: .loginButtonTap)
+}
+
+internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    if textField === self.loginTextField {
+        self.pipeline.notify(intent: .loginChange(...))
+    }
+    else if textField === self.passwordTextField {
+        self.pipeline.notify(intent: .passwordChange(...))
+    }
+  
+    return true
 }
 ```
 
