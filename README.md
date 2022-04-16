@@ -29,11 +29,11 @@ Now, after templates are ready, create the generic module from template.
 
 There are templates fot UIKit projects, and also for SwiftUI ones. If your use both frameworks in your project, you can use both templates with no problems.
 
-##### UIKit environment
+#### UIKit environment
 
 For UIKit projects, create the group for generic module (like "RLEModule" or "UIKitModule", or whatever you want). Then click "New File..." from a context menu of this group, scroll down to a section "File Templates" and pick "RTModule UIKit Generic". You'll be asked for a couple of settings; the primary one is your Trunk object where you keep all your dependencies (if you don't have such for any reasons, you can specify just "NSObject"). Finally, you'll get the generic module files, each starting with "RLE" (letter E here stands for "Enums").
 
-##### SwiftUI environment
+#### SwiftUI environment
 
 For SwiftUI projects, create the group for generic module (like "RLBModule" or "SwiftUIModule", or whatever you want). Then click "New File..." from a context menu of this group, scroll down to a section "File Templates" and pick "RTModule SwiftUI Generic". You'll be asked for your Trunk object where you keep all your dependencies (if you don't have such for any reasons, you can specify just "NSObject"). Finally, you'll get the generic module files, each starting with "RLB" (letter B here stands for "Binding").
 
