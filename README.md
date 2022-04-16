@@ -1,17 +1,55 @@
-# Round Table: Design Pattern for Apple platform
+# Round Table: Design Pattern for iOS platform
 
-The design pattern got its name Round Table in honor of the history of King Arthur and the Knights of the Round Table. Like those knights, the module components are also working together for the common purposes, but also are equal to each other and are independent by their signatures.
+Round Table design pattern is named for King Arthur and the Knights of the Round Table to signify the equality of the module components and their common purpose.
+
+![Схема построения модуля](https://habrastorage.org/getpro/habr/upload_files/d30/dff/202/d30dff202d9d5e5ab58d4a2a8fd71f39.jpg)
 
 ## Table of contents:
 
-- Part #1: Components and their responsibilities
-- Part #2: Communication between components
-- Part #3: Communication between modules
-- Part #4: Memory management
-- Part #5: Briefly howto
-- Part #6: Installation and usage
+- Part #1: Installation and usage
+- Part #2: Components and their responsibilities
+- Part #3: Communication between components
+- Part #4: Communication between modules
+- Part #5: Memory management
+- Part #6: Briefly howto
 
-## Part #1: Components and their responsibilities
+## Part #1: Installation and usage
+
+### Install the templates
+
+Download the XcodeTemplates.zip file, and extract his contents into Tempates directory:
+
+```
+~/Library/Developer/Xcode/Templates/File Templates
+```
+
+### Configure the generic module
+
+Now, after templates are ready, create the generic module from template.
+
+There are templates fot UIKit projects, and also for SwiftUI ones. If your use both frameworks in your project, you can use both templates with no problems.
+
+##### UIKit environment
+
+For UIKit projects, create the group for generic module (like "RLEModule" or "UIKitModule", or whatever you want). Then click "New File..." from a context menu of this group, scroll down to a section "File Templates" and pick "RTModule UIKit Generic". You'll be asked for a couple of settings; the primary one is your Trunk object where you keep all your dependencies (if you don't have such for any reasons, you can specify just "NSObject"). Finally, you'll get the generic module files, each starting with "RLE" (letter E here stands for "Enums").
+
+##### SwiftUI environment
+
+For SwiftUI projects, create the group for generic module (like "RLBModule" or "SwiftUIModule", or whatever you want). Then click "New File..." from a context menu of this group, scroll down to a section "File Templates" and pick "RTModule SwiftUI Generic". You'll be asked for your Trunk object where you keep all your dependencies (if you don't have such for any reasons, you can specify just "NSObject"). Finally, you'll get the generic module files, each starting with "RLB" (letter B here stands for "Binding").
+
+### Create your own modules
+
+Now, having the generic module configured, you're ready to create your own modules.
+
+For UIKit modules, you can use `RTModule UIKit Standalone.xctemplate` for a ViewController and `RTModule UIKit Navigatable.xctemplate` for a NavigationController. Technically they have a minimal code difference, so you always can transform any of them to each other in a couple of seconds by changing the typealias for View.
+
+For SwiftUI modules, you can use `RTModule SwiftUI View.xctemplate` without any difference between standalone and navigatable views.
+
+### Explore and play
+
+Feel free to download this entire repo and explore some built-in examples.
+
+## Part #2: Components and their responsibilities
 
 ### Presenter: controls the UI
 
@@ -28,10 +66,6 @@ Joint is responsible for building different modules into hierarchy. This purpose
 ### State: keeps the module state data
 
 State is responsible for keeping some state data the module needs for performing its job. For example, State can keep an error description that sometimes gets delivered from Core and should be then presented into View. Another example, State can keep the entered text from input field that will be processed later, after user taps the proceed button. All primary components has access to the State (like, Core can write something to, and Presenter can read something from).
-
-Here is the general diagram:
-
-![Схема построения модуля](https://habrastorage.org/getpro/habr/upload_files/d30/dff/202/d30dff202d9d5e5ab58d4a2a8fd71f39.jpg)
 
 ### Assembly: builds the module
 
@@ -71,7 +105,7 @@ func LoginModuleAssembly(trunk: Trunk) -> LoginModule {
 }
 ```
 
-## Part #2: Communication between components
+## Part #3: Communication between components
 
 Components themselves don't know anything about others, they are isolated. They use Pipeline for communication. Pipeline does distribute commands from any component to all others.
 
@@ -162,7 +196,7 @@ Please note, each component has its specific commands naming:
 - **Joint** can share his **Inputs** for Core and Presenter, to notify about some input data from the outside (typically, from parent module); and also it can share his **Outputs** to outside (typically, to parent module)
 - **View** can share his **Intents** for Core, Presenter, and Joint, to notify a user has interacted with UI
 
-## Part #3: Communication between modules
+## Part #4: Communication between modules
 
 As soon Joint is responsible for building modules hierarchy, he also creates the children modules. Let's see an example below, here we want to present the modal screen for user could type his comment and then close that screen:
 
@@ -240,7 +274,7 @@ override func handlePresenter(update: PresenterUpdate) {
 }
 ```
 
-## Part #4: Memory management
+## Part #5: Memory management
 
 Memory management is based on automatic UIViewController existence during a navigation:
 
@@ -249,7 +283,7 @@ Memory management is based on automatic UIViewController existence during a navi
 - Core, Presenter, and Joint strongly hold the State
 - All other references are weak
 
-## Part #5: Briefly howto
+## Part #6: Briefly howto
 
 There are six places you should learn about:
 Assembly, State, Core, Presenter, View, and Joint.
@@ -368,8 +402,8 @@ Core has three entrypoints. All of them are basically do nothing, so feel free n
 
 ```swift
 /*
-  *CoreEvent are the values for notifying about any changes
-  the Core can distribute to other modules via Pipeline
+  *CoreEvent are the notifications about any changes
+  the Core sends to other components via Pipeline
 */
 enum LoginModuleCoreEvent {
     enum Failure { case wrongPair, reachedLimit }
@@ -437,7 +471,7 @@ Presenter has four entrypoints. All of them are basically do nothing, so feel fr
 ```swift
 /*
   *PresenterUpdate are the values for updating UI
-  the Presenter can distribute to View via Pipeline
+  the Presenter sends to View via Pipeline
 */
 enum LoginModulePresenterUpdate {
     case prefill(login: String, password: String)
@@ -516,14 +550,14 @@ Also, joint has two entrypoints. All of them are basically do nothing, so feel f
 
 ```swift
 /*
-  *JointInput are the values the Joint can receive from outside
-  to distribute to components via Pipeline
+  *JointInput are the values the Joint gets from outside
+  and sends to other components via Pipeline
 */
 enum LoginModuleJointInput {
 }
 
 /*
-  *JointOutput are the values the Joint can send to his parent
+  *JointOutput are the values the Joint sends to his parent
 */
 enum LoginModuleJointOutput {
     case dismiss
@@ -572,7 +606,7 @@ View has just one entrypoint. It basically do nothing, so feel free not to imple
 ```swift
 /*
   *ViewIntent are user actions in UI
-  the View can distribute to module via Pipeline
+  the View sends to other components via Pipeline
 */
 enum LoginFormViewIntent {
     case loginChange(String)
@@ -607,34 +641,3 @@ internal func textField(_ textField: UITextField, shouldChangeCharactersIn range
     return true
 }
 ```
-
-## Part #6: Installation and usage
-
-### Install the templates
-
-Download the XcodeTemplates.zip file, and extract his contents into Tempates directory:
-```
-~/Library/Developer/Xcode/Templates/File Templates
-```
-
-### Configure the generic module
-
-Now, after templates are ready, create the generic module from template.
-
-There are templates fot UIKit projects, and also for SwiftUI ones. If your use both frameworks in your project, you can use both templates with no problems.
-
-For UIKit projects, create the group for generic module (like "RLEModule" or "UIKitModule", or whatever you want). Then click "New File..." from a context menu of this group, scroll down to a section "File Templates" and pick "RTModule UIKit Generic". You'll be asked for a couple of settings; the primary one is your Trunk object where you keep all your dependencies (if you don't have such for any reasons, you can specify just "NSObject"). Finally, you'll get the generic module files, each starting with "RLE" (letter E here stands for "Enums").
-
-For SwiftUI projects, create the group for generic module (like "RLBModule" or "SwiftUIModule", or whatever you want). Then click "New File..." from a context menu of this group, scroll down to a section "File Templates" and pick "RTModule SwiftUI Generic". You'll be asked for your Trunk object where you keep all your dependencies (if you don't have such for any reasons, you can specify just "NSObject"). Finally, you'll get the generic module files, each starting with "RLB" (letter B here stands for "Binding").
-
-### Create your own modules
-
-Now, having the generic module configured, you're ready to create your own modules.
-
-For UIKit modules, you can use `RTModule UIKit Standalone.xctemplate` for a ViewController and `RTModule UIKit Navigatable.xctemplate` for a NavigationController. Technically they have a minimal code difference, so you always can transform any of them to each other in a couple of seconds by changing the typealias for View.
-
-For SwiftUI modules, you can use `RTModule SwiftUI View.xctemplate` without any difference between standalone and navigatable views.
-
-### Explore and play
-
-Feel free to download this entire repo and explore some built-in examples.
